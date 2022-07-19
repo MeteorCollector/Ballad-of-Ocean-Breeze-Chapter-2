@@ -14,6 +14,8 @@ public class BattleField : MonoBehaviour
     private bool cleared = false;
     private bool inBattle = false;
     private bool finished = false;
+    public GameObject winUI;
+    public AudioClip winMusic;
     void Start()
     {
         fac = this.gameObject.GetComponent<FacingCam>();
@@ -28,9 +30,22 @@ public class BattleField : MonoBehaviour
     {
         if (fac != null) Destroy(fac);
         cleared = true;
+        StartCoroutine(clearAnim(3));
+    }
+
+    public IEnumerator clearAnim(float time)
+    {
+        float number = 60 * time;
+        winUI.SetActive(true);
+        AudioSource.PlayClipAtPoint(winMusic, transform.position);
         innerRing.switchMode(true);
+        for (int i = 0; i < number; i++)
+        {
+            yield return new WaitForFixedUpdate();
+        }
         //for (int i = 0; i < enemyCnt; i++)
         //    Destroy(enemies[i]);
+        winUI.SetActive(false);
         Destroy(barrier);
         //Destroy(this);
     }

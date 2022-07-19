@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     //life & combat
     public float healthBound = 10;
-    private float health = 100;
+    public float health = 100;
     public bool alive = true;
     public Transform gun;
     public GameObject bulletPrefab;
@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 direction;
     public RotatingCam innerRing;
     public AudioClip hitSound;
+    public GameObject dieUI;
 
     //save & load
     public Vector3 spawn = new Vector3(0, 0, 0);
@@ -53,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool("die", true);
         alive = false;
+        dieUI.SetActive(true);
         return;
     }
 

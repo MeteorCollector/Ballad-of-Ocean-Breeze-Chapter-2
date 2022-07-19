@@ -20,6 +20,7 @@ public class RotatingCam : MonoBehaviour
     public AudioClip FightMusic;
     public AudioClip intoFight;
     public AudioSource Source;
+    public GameObject FightUI;
     void Start()
     {
         trans = player.GetComponent<Transform>();// may be modified when multiplayer
@@ -55,6 +56,7 @@ public class RotatingCam : MonoBehaviour
         {
             if (toIdle)
             {
+                FightUI.SetActive(false);
                 StartCoroutine(RotateAround(-40, rotateTime));
                 Source.clip = IdleMusic;
                 Source.Play();
@@ -62,6 +64,7 @@ public class RotatingCam : MonoBehaviour
             }
             else
             {
+                FightUI.SetActive(true);
                 StartCoroutine(RotateAround(40, rotateTime));
                 Source.clip = FightMusic;
                 AudioSource.PlayClipAtPoint(intoFight, trans.position);
