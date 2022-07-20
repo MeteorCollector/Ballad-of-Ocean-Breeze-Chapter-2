@@ -32,14 +32,22 @@ public class PlayerMovement : MonoBehaviour
         //offset = Camera.main.transform.position - transform.position;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spawn = this.transform.position;
+        spawn = transform.position;
         health = healthBound;
     }
 
     public void harm(float damage)
     {
         if (!alive) return;
-        if (health - damage <= 0) { health = 0; die(); return; }
+        if (health - damage <= 0) 
+        { 
+            health = 0;
+            die();
+            StartCoroutine(innerRing.FightFX(0.1f));
+            StartCoroutine(innerRing.CameraShake(1f));
+            AudioSource.PlayClipAtPoint(hitSound, transform.position);   
+            return; 
+        }
         else { 
             health -= damage;
             StartCoroutine(innerRing.FightFX(0.1f));
@@ -67,20 +75,23 @@ public class PlayerMovement : MonoBehaviour
         GameObject bgo = Instantiate(bulletPrefab, gun.position, gun.rotation);
     }
 
-    void respawn()
+    void Respawn()
     {
-        this.transform.position = spawn;
+        animator.SetBool("die", false);
+        dieUI.SetActive(false);
+        transform.position = spawn;
         health = healthBound;
         alive = true;
+        if (innerRing.isFighting) { innerRing.switchMode(true); }
     }
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.R)) respawn();// respawn, 待后续存档机制改进
+        if (Input.GetKeyDown(KeyCode.R)) Respawn();// respawn, 待后续存档机制改进
         mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)));
         //mousePos.z = 0;
         if (!alive) { rigidbody.velocity = new Vector3(0, 0, 0); return; } //以下内容死亡后无法启用
 
-        if (Input.GetMouseButtonDown(0)) shoot();
+        if (Input.GetMouseButtonDown(0) && innerRing.isFighting) shoot();
         inputX = Input.GetAxisRaw("Horizontal");
         inputY = Input.GetAxisRaw("Vertical");
         Vector2 input = (transform.right * inputX + transform.up * inputY).normalized;// 输入需要乘以本身坐标系来确保行进方向正确

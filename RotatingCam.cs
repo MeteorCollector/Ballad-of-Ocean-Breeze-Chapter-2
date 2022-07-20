@@ -12,7 +12,7 @@ public class RotatingCam : MonoBehaviour
     private Transform trans;
     public bool isInnerRing = false;
     private bool isRotating = false;
-    private bool isFighting = false;
+    public bool isFighting = false;
     private bool onFx = false;
     public PostProcessVolume myVolume;//≤ª‘Ÿ «PostProcessVolume myVolume;
     private ChromaticAberration chro;

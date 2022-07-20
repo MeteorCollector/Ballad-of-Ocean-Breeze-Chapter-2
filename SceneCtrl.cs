@@ -15,7 +15,7 @@ public class SceneCtrl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // 存档读档机制有待完善
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {

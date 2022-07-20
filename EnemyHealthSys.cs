@@ -12,6 +12,7 @@ public class EnemyHealthSys : MonoBehaviour
     private float health = 100;
     public BattleField field;
     public bool alive = true;
+    public Vector3 spawnPoint = new Vector3(0, 0, 0);
 
     //private Vector3 offset;
     void Start()
@@ -20,6 +21,15 @@ public class EnemyHealthSys : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         health = healthBound;
+        spawnPoint = this.gameObject.transform.position;
+    }
+
+    public void Respawn()
+    {
+        animator.SetBool("die", false);
+        health = healthBound;
+        alive = true;
+        this.gameObject.transform.position = spawnPoint;
     }
 
     public void harm(float damage)
@@ -28,6 +38,11 @@ public class EnemyHealthSys : MonoBehaviour
         if (health - damage <= 0) { health = 0; die(); return; }
         else { health -= damage; return; }
     }
+
+    //public void Knockback(Vector2 dir, float force)
+    //{
+    //    rigidbody.AddForce(dir.normalized * force);
+    //}
 
     void die()
     {
